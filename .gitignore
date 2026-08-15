@@ -1,0 +1,15 @@
+work/
+.verify-cache/
+.gradle-cache/
+**/.gradle/
+**/build/
+**/node_modules/
+**/dist/
+.idea/
+.vscode/
+*.iml
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
