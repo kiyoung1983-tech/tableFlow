@@ -1,4 +1,4 @@
-name: spring-fullstack
+name: tableflow
 services:
   postgres:
     image: postgres:17-alpine

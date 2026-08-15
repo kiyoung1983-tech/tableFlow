@@ -1,6 +1,8 @@
-# Spring Full-stack Starter
+# TableFlow
 
-Java 21/Spring Boot 4.1 백엔드와 React 19/TypeScript 5.9 프런트엔드를 한 저장소에서 시작하기 위한 범용 모노레포입니다. 로컬 개발, 계약 기반 API, 통합 테스트, 운영 프로필, 컨테이너 빌드, CI까지 연결되어 있습니다.
+Spring Full-stack Starter를 기반으로 만드는 식당 예약 관리 서비스입니다. Java 21/Spring Boot 4.1 백엔드와 React 19/TypeScript 5.9 프런트엔드를 사용하며, 로컬 개발, 계약 기반 API, 통합 테스트, 운영 프로필, 컨테이너 빌드, CI까지 연결되어 있습니다.
+
+현재 Todo 도메인은 공통 API·보안·페이징·오류 처리·테스트 흐름을 확인하기 위한 기준 예제입니다. TableFlow 개발에서는 요구사항과 예약 모델을 먼저 확정한 뒤 식당·지점·테이블·영업시간·고객·예약 도메인으로 단계적으로 교체합니다.
 
 ## 포함된 기본 구성
 
@@ -19,7 +21,7 @@ Java 21/Spring Boot 4.1 백엔드와 React 19/TypeScript 5.9 프런트엔드를 
 준비물은 Java 21, Node.js 24, Docker Desktop입니다.
 
 ```powershell
-cd C:\Codex\dev\spring-fullstack-starter
+cd C:\Codex\dev\tableFlow
 docker compose up -d
 .\backend\gradlew.bat -p backend bootRun
 ```
@@ -112,6 +114,7 @@ docker compose -f compose.prod.yaml up --build -d
 
 ## 문서
 
+- [TableFlow 프로젝트 시작 안내](outputs/TableFlow_프로젝트_시작안내.md)
 - [상세 신입 개발 가이드](outputs/Spring_풀스택_개발_신입_가이드.md)
 - [최신 Word 신입 개발 가이드](outputs/Spring_풀스택_개발환경_신입_가이드_최신.docx)
 - [공통 기능 구축 기록](outputs/공통기능_구축_상세기록.md)

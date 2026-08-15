@@ -1,4 +1,4 @@
-name: spring-fullstack-prod
+name: tableflow-prod
 
 services:
   postgres:

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 export function HomePage() {
   return (
     <main className="page hero-page">
-      <p className="eyebrow">PRODUCTION-MINDED FOUNDATION</p>
-      <h1>작게 시작하고,<br />운영 기준으로 확장하세요.</h1>
-      <p className="lead">환경 분리, API 계약, 요청 추적, 테스트와 CI가 연결된 Spring 풀스택 기본 골격입니다.</p>
-      <Link className="primary-link" to="/todos">Todo API 확인하기</Link>
+      <p className="eyebrow">RESTAURANT RESERVATION</p>
+      <h1>좋은 식사의 시작을,<br />더 간편한 예약으로.</h1>
+      <p className="lead">TableFlow는 식당의 좌석과 시간을 연결하는 예약 관리 서비스입니다.</p>
+      <Link className="primary-link" to="/todos">기준 API 확인하기</Link>
     </main>
   )
 }

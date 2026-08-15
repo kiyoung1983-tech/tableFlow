@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
-  title: Spring Full-stack Starter API
+  title: TableFlow API
   version: 1.0.0
-  description: Todo API와 애플리케이션 상태 확인 API의 계약입니다.
+  description: 식당 예약 도메인 구현 전 기준 Todo API와 애플리케이션 상태 확인 API의 계약입니다.
 servers:
   - url: http://localhost:8080
     description: Local Spring Boot server
