@@ -1,5 +1,9 @@
 # TableFlow 프로젝트 시작 안내
 
+> 확정된 MVP 설계와 첫 구현 결과는 [TableFlow MVP 설계](TableFlow_MVP_설계.md)를 기준으로 한다.
+
+> 2026-08-17 현재 MVP M1~M11 구현, 릴리스 리뷰 보완과 공통 계약 대체 검증을 완료했다. 아래의 초기 Todo 예제는 계획대로 코드·화면·OpenAPI에서 제거했고, 기존 V1/V3 이력은 보존한 채 V6 migration에서 테이블을 제거했다. 운영 절차는 [TableFlow 운영 런북](TableFlow_운영_런북.md)을 따른다.
+
 ## 1. 프로젝트 목표
 
 TableFlow는 고객이 식당의 예약 가능 시간을 조회하고 예약을 생성·변경·취소하며, 식당 관리자가 지점·테이블·영업시간과 당일 예약을 관리하는 서비스다.
@@ -20,7 +24,7 @@ TableFlow는 고객이 식당의 예약 가능 시간을 조회하고 예약을 
 - Testcontainers 백엔드 통합 테스트와 Vitest 프런트 테스트
 - Docker Compose, 운영 Dockerfile, Nginx, GitHub Actions, Dependabot
 
-현재 Todo 코드는 위 공통 흐름을 검증하는 기준 예제다. 예약 요구사항과 API를 설계한 뒤 제거하거나 예약 도메인 테스트로 교체한다.
+초기 Todo 코드는 위 공통 흐름을 검증하는 기준 예제였다. 예약 도메인과 `CommonApiContractTests`가 인증·검증·오류·페이징·요청 추적·CORS·Actuator 책임을 대체한 뒤 제거했다.
 
 ## 3. MVP 범위
 
@@ -108,4 +112,3 @@ TableFlow 식당 예약 관리 프로젝트 개발을 시작하자.
 
 설계 내용을 먼저 문서로 정리하고 검토한 뒤 구현을 시작해 줘.
 ```
-

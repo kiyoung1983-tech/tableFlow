@@ -23,6 +23,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '24', cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: node --test scripts/staging-smoke.test.mjs
+      - run: node --test scripts/deployment-preflight.test.mjs
+      - run: node --test scripts/staging-uat.test.mjs
       - run: npm ci --prefix frontend
       - run: npm run check --prefix frontend
   containers:

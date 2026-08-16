@@ -21,3 +21,12 @@ Invoke-CheckedCommand -Command "$repositoryRoot\backend\gradlew.bat" -CommandArg
 Invoke-CheckedCommand -Command 'npm.cmd' -CommandArguments @(
     'run', 'check', '--prefix', "$repositoryRoot\frontend"
 )
+Invoke-CheckedCommand -Command 'node' -CommandArguments @(
+    '--test', "$repositoryRoot\scripts\staging-smoke.test.mjs"
+)
+Invoke-CheckedCommand -Command 'node' -CommandArguments @(
+    '--test', "$repositoryRoot\scripts\deployment-preflight.test.mjs"
+)
+Invoke-CheckedCommand -Command 'node' -CommandArguments @(
+    '--test', "$repositoryRoot\scripts\staging-uat.test.mjs"
+)

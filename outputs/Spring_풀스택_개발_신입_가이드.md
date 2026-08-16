@@ -1,9 +1,11 @@
 # Spring 풀스택 개발 신입 가이드
 
 기준일: 2026-08-16  
-프로젝트: `C:\Codex\dev\spring-fullstack-starter`
+프로젝트: `C:\Codex\dev\tableFlow`
 
-이 문서는 Java·Spring·React 경험이 많지 않은 신입 개발자가 현재 저장소를 실행하고, 요청 흐름을 추적하고, 안전하게 기능을 추가할 수 있도록 설명한다. 명령을 외우는 것보다 “어느 프로세스가 어떤 파일을 읽고 다음 계층에 무엇을 전달하는가”를 이해하는 것이 목표다.
+> 문서 상태: 이 문서는 TableFlow 전환 전 Todo 기반 공통 구조를 설명하는 **역사적 학습 자료**다. 현재 구현과 실행 절차는 [TableFlow 프로젝트 시작 안내](TableFlow_프로젝트_시작안내.md), 도메인 결정은 [TableFlow MVP 설계](TableFlow_MVP_설계.md)를 기준으로 한다.
+
+이 문서는 Java·Spring·React 경험이 많지 않은 신입 개발자가 초기 Todo 기준선의 요청 흐름을 추적하며 공통 구조를 학습할 수 있도록 설명한다. 명령을 외우는 것보다 “어느 프로세스가 어떤 파일을 읽고 다음 계층에 무엇을 전달하는가”를 이해하는 것이 목표다.
 
 ## 1. 가장 먼저 알아야 할 전체 그림
 
@@ -57,7 +59,7 @@ spring-fullstack-starter/
 │  └─ Dockerfile
 ├─ frontend/
 │  ├─ package.json
-│  ├─ Dockerfile / nginx.conf
+│  ├─ Dockerfile / nginx.conf.template
 │  └─ src/
 │     ├─ api/
 │     ├─ app/
@@ -197,7 +199,7 @@ PostgreSQL named volume은 남기 때문에 다음 실행에도 데이터가 유
 
 `spring.jpa.hibernate.ddl-auto=validate`이므로 Hibernate는 스키마를 임의로 변경하지 않는다. DB 구조 변경은 Flyway만 담당한다.
 
-## 6. 현재 API
+## 6. 초기 Todo 기준 API
 
 ### 상태 조회
 
@@ -374,7 +376,7 @@ http_request method=GET path=/api/todos status=200 duration_ms=12
 
 ## 10. 데이터베이스와 Flyway
 
-현재 migration은 세 개다.
+초기 Todo 기준 migration은 세 개였다.
 
 | 버전 | 파일 | 역할 |
 |---|---|---|
@@ -411,7 +413,7 @@ Entity를 API에 그대로 반환하지 않고 `TodoResponse` record로 변환�
 
 ## 12. 보안 설정
 
-현재 정책은 다음과 같다.
+초기 기준 정책은 다음과 같다.
 
 | 요청 | 정책 |
 |---|---|
@@ -435,7 +437,7 @@ DEV_PASSWORD
 
 Spring Security에서 발생하는 401과 403은 ControllerAdvice까지 도달하지 않는다. 따라서 `SecurityConfig`의 `AuthenticationEntryPoint`와 `AccessDeniedHandler`가 Problem Details를 직접 작성한다.
 
-현재 JSON API 개발을 위해 `/api/**`의 CSRF를 예외 처리했다. 브라우저 쿠키 기반 인증을 도입하면 CSRF 정책을 다시 설계해야 한다.
+초기 JSON API 개발에서는 `/api/**`의 CSRF를 예외 처리했다. 브라우저 쿠키 기반 인증을 도입하면 CSRF 정책을 다시 설계해야 한다.
 
 `/actuator/health/**`는 공개하지만 `/actuator/prometheus`를 포함한 나머지 Actuator endpoint는 인증이 필요하다. 운영 Nginx는 Prometheus endpoint를 외부에 proxy하지 않는다. 실제 OIDC 공급자를 선택한 뒤에는 issuer뿐 아니라 토큰 `audience`, `scope`, `role`을 어떤 권한으로 바꿀지도 정해야 한다.
 
@@ -510,7 +512,7 @@ npm.cmd run check --prefix frontend
 - `X-Request-Id` 읽기
 - 요청마다 `X-Request-Id` 생성
 - `VITE_API_BASE_URL` 기반 API 주소 선택
-- OIDC SDK를 나중에 연결할 수 있는 access token provider
+- 당시에는 OIDC SDK를 나중에 연결할 수 있도록 둔 access token provider
 - 2xx가 아닌 응답을 `ApiError`로 변환
 - JSON 오류 본문이 없는 경우 `HTTP_ERROR` 기본 오류 생성
 
@@ -543,7 +545,7 @@ endpoint별 함수를 제공한다.
 .\backend\gradlew.bat -p backend test
 ```
 
-현재 백엔드 테스트는 총 12개이며 다음을 검증한다.
+초기 Todo 기준 백엔드 테스트는 총 12개였으며 다음을 검증했다.
 
 - 전체 Spring ApplicationContext 기동
 - PostgreSQL 17 Testcontainer 실행
@@ -561,7 +563,7 @@ endpoint별 함수를 제공한다.
 - CORS preflight 허용 origin
 - health 공개와 Prometheus 인증 보호
 
-프론트는 Vitest/Testing Library 테스트 3개를 실행한다. API client의 Bearer token·요청 ID·Problem Details 변환과 Todo page의 서버 상태 렌더링을 검증한다.
+초기 프런트는 Vitest/Testing Library 테스트 3개를 실행했다. API client의 Bearer token·요청 ID·Problem Details 변환과 Todo page의 서버 상태 렌더링을 검증했다.
 
 Testcontainers DB는 개발 DB와 다르다.
 
