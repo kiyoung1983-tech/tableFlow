@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -34,6 +36,48 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         var problem = ProblemDetail.forStatusAndDetail(exception.status(), exception.getMessage());
         problem.setTitle(exception.status().getReasonPhrase());
         problem.setProperty("code", exception.code());
+        addTraceId(problem, request);
+        return problem;
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    ProblemDetail handleOptimisticLockingFailure(
+            OptimisticLockingFailureException exception,
+            HttpServletRequest request) {
+        var problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                "다른 요청이 먼저 데이터를 변경했습니다. 최신 정보를 다시 조회해 주세요.");
+        problem.setTitle(HttpStatus.CONFLICT.getReasonPhrase());
+        problem.setProperty("code", "VERSION_CONFLICT");
+        addTraceId(problem, request);
+        return problem;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ProblemDetail handleDataIntegrityViolation(
+            DataIntegrityViolationException exception,
+            HttpServletRequest request) {
+        log.warn("Database constraint rejected a request");
+        var databaseMessage = exception.getMostSpecificCause().getMessage();
+        var code = "DATA_CONFLICT";
+        var detail = "다른 데이터와 충돌하여 요청을 처리할 수 없습니다.";
+        if (databaseMessage != null && databaseMessage.contains("ex_reservation_table_occupancy")) {
+            code = "RESERVATION_CONFLICT";
+            detail = "다른 예약이 같은 테이블의 점유 구간을 먼저 확보했습니다.";
+        } else if (databaseMessage != null
+                && databaseMessage.contains("ex_reservation_customer_overlap")) {
+            code = "DUPLICATE_CUSTOMER_RESERVATION";
+            detail = "같은 지점에 시간이 겹치는 활성 예약이 있습니다.";
+        } else if (databaseMessage != null
+                && databaseMessage.contains("uk_reservation_idempotency_key")) {
+            code = "IDEMPOTENCY_KEY_REUSED";
+            detail = "같은 멱등성 키를 다른 예약 요청에 사용할 수 없습니다.";
+        }
+        var problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                detail);
+        problem.setTitle(HttpStatus.CONFLICT.getReasonPhrase());
+        problem.setProperty("code", code);
         addTraceId(problem, request);
         return problem;
     }
