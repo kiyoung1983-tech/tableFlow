@@ -28,10 +28,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Todo 목록 조회 */
+        /** 전환 기간 Todo 목록 조회 */
         get: operations["listTodos"];
         put?: never;
-        /** Todo 생성 */
+        /** 전환 기간 Todo 생성 */
         post: operations["createTodo"];
         delete?: never;
         options?: never;
@@ -46,10 +46,352 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Todo 단건 조회 */
+        /** 전환 기간 Todo 단건 조회 */
         get: operations["getTodo"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/booking-context": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 공개 예약 화면 초기 정보 조회
+         * @description 활성 식당의 활성 지점과 현재 개인정보 정책 정보를 반환합니다.
+         */
+        get: operations["getBookingContext"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/branches/{branchId}/availability": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 예약 가능 시간 조회
+         * @description 응답은 조회 시점의 안내이며 예약 생성을 보장하지 않습니다.
+         */
+        get: operations["getBranchAvailability"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/reservations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 예약 요청 생성
+         * @description 가용성을 다시 확인하고 테이블이 배정된 PENDING 예약을 생성합니다.
+         */
+        post: operations["createReservation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/reservations/{reservationCode}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 고객에게 발급된 10자리 예약 번호 */
+                reservationCode: components["parameters"]["ReservationCode"];
+            };
+            cookie?: never;
+        };
+        /**
+         * 고객 예약 조회
+         * @description 예약 번호가 없거나 관리 토큰이 일치하지 않으면 동일한 404 응답을 반환합니다.
+         */
+        get: operations["getReservation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** 고객 예약 변경 */
+        patch: operations["changeReservation"];
+        trace?: never;
+    };
+    "/api/public/reservations/{reservationCode}/cancellation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 고객 예약 취소 */
+        post: operations["cancelReservation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/restaurants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 식당 목록 조회 */
+        get: operations["listRestaurants"];
+        put?: never;
+        /** 식당 생성 */
+        post: operations["createRestaurant"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/restaurants/{restaurantId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                restaurantId: components["parameters"]["RestaurantId"];
+            };
+            cookie?: never;
+        };
+        /** 식당 조회 */
+        get: operations["getRestaurant"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** 식당 변경 */
+        patch: operations["updateRestaurant"];
+        trace?: never;
+    };
+    "/api/admin/restaurants/{restaurantId}/branches": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 식당의 지점 목록 조회 */
+        get: operations["listBranches"];
+        put?: never;
+        /** 지점 생성 */
+        post: operations["createBranch"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        /** 지점과 예약 정책 조회 */
+        get: operations["getBranch"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** 지점과 예약 정책 변경 */
+        patch: operations["updateBranch"];
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}/tables": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        /** 테이블 목록 조회 */
+        get: operations["listDiningTables"];
+        put?: never;
+        /** 테이블 생성 */
+        post: operations["createDiningTable"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/tables/{tableId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** 테이블 변경 */
+        patch: operations["updateDiningTable"];
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}/business-hours": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        /** 주간 영업시간 조회 */
+        get: operations["getBusinessHours"];
+        /** 주간 영업시간 전체 교체 */
+        put: operations["replaceBusinessHours"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}/booking-blocks": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        /** 기간과 겹치는 차단 시간 조회 */
+        get: operations["listBookingBlocks"];
+        put?: never;
+        /** 차단 시간 생성 */
+        post: operations["createBookingBlock"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/booking-blocks/{bookingBlockId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 차단 시간 삭제 */
+        delete: operations["deleteBookingBlock"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}/reservations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 관리자 예약 목록 조회 */
+        get: operations["listAdminReservations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/branches/{branchId}/reservation-dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 관리자 날짜별 예약 현황 조회
+         * @description 지점 현지 날짜의 상태 건수와 영업시간 슬롯별 테이블 수를 반환합니다.
+         */
+        get: operations["getAdminReservationDashboard"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/reservations/{reservationId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 관리자 예약 상세 조회 */
+        get: operations["getAdminReservation"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/reservations/{reservationId}/transitions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 관리자 예약 상태 전이 */
+        post: operations["transitionReservation"];
         delete?: never;
         options?: never;
         head?: never;
@@ -89,6 +431,311 @@ export interface components {
             first: boolean;
             last: boolean;
         };
+        /** @enum {string} */
+        OperationalStatus: "ACTIVE" | "INACTIVE";
+        BookingContextResponse: {
+            privacyPolicyVersion: string;
+            privacyRetentionDays: number;
+            branches: components["schemas"]["PublicBranchResponse"][];
+        };
+        PublicBranchResponse: {
+            /** Format: uuid */
+            id: string;
+            restaurantName: string;
+            name: string;
+            address: string;
+            timezone: string;
+            bookingHorizonDays: number;
+            maxPartySize: number;
+        };
+        CreateRestaurantRequest: {
+            name: string;
+        };
+        UpdateRestaurantRequest: {
+            name?: string;
+            status?: components["schemas"]["OperationalStatus"];
+            /** Format: int64 */
+            expectedVersion: number;
+        };
+        RestaurantResponse: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            status: components["schemas"]["OperationalStatus"];
+            /** Format: int64 */
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CreateBranchRequest: {
+            name: string;
+            address: string;
+            /** @example Asia/Seoul */
+            timezone: string;
+        };
+        UpdateBranchRequest: {
+            name?: string;
+            address?: string;
+            timezone?: string;
+            status?: components["schemas"]["OperationalStatus"];
+            slotIntervalMinutes?: number;
+            defaultDurationMinutes?: number;
+            bufferMinutes?: number;
+            minAdvanceMinutes?: number;
+            bookingHorizonDays?: number;
+            changeCutoffMinutes?: number;
+            noShowGraceMinutes?: number;
+            maxPartySize?: number;
+            maxCapacityGap?: number;
+            /** Format: int64 */
+            expectedVersion: number;
+        };
+        BranchResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            restaurantId: string;
+            name: string;
+            address: string;
+            timezone: string;
+            status: components["schemas"]["OperationalStatus"];
+            slotIntervalMinutes: number;
+            defaultDurationMinutes: number;
+            bufferMinutes: number;
+            minAdvanceMinutes: number;
+            bookingHorizonDays: number;
+            changeCutoffMinutes: number;
+            noShowGraceMinutes: number;
+            maxPartySize: number;
+            maxCapacityGap: number;
+            /** Format: int64 */
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CreateDiningTableRequest: {
+            name: string;
+            capacity: number;
+        };
+        UpdateDiningTableRequest: {
+            name?: string;
+            capacity?: number;
+            enabled?: boolean;
+            /** Format: int64 */
+            expectedVersion: number;
+        };
+        DiningTableResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            branchId: string;
+            name: string;
+            capacity: number;
+            enabled: boolean;
+            /** Format: int64 */
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ReplaceBusinessHoursRequest: {
+            items: components["schemas"]["BusinessHourRequest"][];
+        };
+        BusinessHourRequest: {
+            dayOfWeek: number;
+            opensAt: string;
+            closesAt: string;
+        };
+        BusinessHoursResponse: {
+            items: components["schemas"]["BusinessHourResponse"][];
+        };
+        BusinessHourResponse: {
+            /** Format: uuid */
+            id: string;
+            dayOfWeek: number;
+            opensAt: string;
+            closesAt: string;
+        };
+        CreateBookingBlockRequest: {
+            /** Format: uuid */
+            diningTableId?: string;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+            reason: string;
+        };
+        BookingBlockResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            branchId: string;
+            /** Format: uuid */
+            diningTableId?: string;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+            reason: string;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        /** @enum {string} */
+        ReservationStatus: "PENDING" | "CONFIRMED" | "SEATED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+        AvailabilityResponse: {
+            /** Format: uuid */
+            branchId: string;
+            /** Format: date */
+            date: string;
+            /** @example Asia/Seoul */
+            timezone: string;
+            partySize: number;
+            /** Format: date-time */
+            asOf: string;
+            slots: components["schemas"]["AvailabilitySlot"][];
+        };
+        AvailabilitySlot: {
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+            availableTableCount: number;
+        };
+        CreateReservationRequest: {
+            /** Format: uuid */
+            branchId: string;
+            /**
+             * Format: date-time
+             * @description offset을 포함한 예약 시작 시각
+             */
+            startsAt: string;
+            partySize: number;
+            guestName: string;
+            /** @description 서버에서 국제 형식으로 정규화합니다. */
+            guestPhone: string;
+            privacyAgreement: components["schemas"]["PrivacyAgreement"];
+        };
+        PrivacyAgreement: {
+            /** @constant */
+            agreed: true;
+            policyVersion: string;
+        };
+        ChangeReservationRequest: {
+            /**
+             * Format: date-time
+             * @description offset을 포함한 변경할 시작 시각
+             */
+            startsAt?: string;
+            partySize?: number;
+            /** Format: int64 */
+            expectedVersion: number;
+        } | unknown | unknown;
+        CancelReservationRequest: {
+            reason?: string;
+            /** Format: int64 */
+            expectedVersion: number;
+        };
+        ReservationCreatedResponse: {
+            reservation: components["schemas"]["PublicReservationResponse"];
+            /** @description 다시 조회할 수 없으므로 고객이 안전하게 보관해야 합니다. */
+            manageToken: string;
+        };
+        PublicReservationResponse: {
+            reservationCode: string;
+            /** Format: uuid */
+            branchId: string;
+            branchName: string;
+            /** @example Asia/Seoul */
+            timezone: string;
+            tableName: string;
+            partySize: number;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+            status: components["schemas"]["ReservationStatus"];
+            /** Format: int64 */
+            version: number;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        AdminReservationResponse: components["schemas"]["PublicReservationResponse"] & {
+            /** Format: uuid */
+            id: string;
+            guestName: string;
+            guestPhoneLastFour: string;
+            history: components["schemas"]["ReservationStatusHistoryResponse"][];
+        };
+        ReservationStatusHistoryResponse: {
+            fromStatus?: components["schemas"]["ReservationStatus"] | null;
+            toStatus: components["schemas"]["ReservationStatus"];
+            /** @enum {string} */
+            actorType: "CUSTOMER" | "ADMIN" | "SYSTEM";
+            actorId?: string;
+            reason?: string;
+            /** Format: date-time */
+            changedAt: string;
+        };
+        TransitionReservationRequest: {
+            /** @enum {string} */
+            targetStatus: "CONFIRMED" | "SEATED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+            /** Format: int64 */
+            expectedVersion: number;
+            reason?: string;
+        };
+        AdminReservationPageResponse: {
+            items: components["schemas"]["AdminReservationResponse"][];
+            page: number;
+            size: number;
+            /** Format: int64 */
+            totalElements: number;
+            totalPages: number;
+            first: boolean;
+            last: boolean;
+        };
+        AdminReservationDashboardResponse: {
+            /** Format: uuid */
+            branchId: string;
+            /** Format: date */
+            date: string;
+            /** @example Asia/Seoul */
+            timezone: string;
+            /** Format: date-time */
+            asOf: string;
+            totalEnabledTables: number;
+            statusCounts: components["schemas"]["AdminReservationStatusCounts"];
+            capacityTimeline: components["schemas"]["AdminCapacityBucket"][];
+        };
+        AdminReservationStatusCounts: {
+            /** Format: int64 */
+            pending: number;
+            /** Format: int64 */
+            confirmed: number;
+            /** Format: int64 */
+            seated: number;
+            /** Format: int64 */
+            completed: number;
+            /** Format: int64 */
+            cancelled: number;
+            /** Format: int64 */
+            noShow: number;
+        };
+        AdminCapacityBucket: {
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+            availableTableCount: number;
+            occupiedTableCount: number;
+            blockedTableCount: number;
+        };
         ProblemDetail: {
             /** Format: uri */
             type?: string;
@@ -119,8 +766,28 @@ export interface components {
                 "application/problem+json": components["schemas"]["ValidationProblemDetail"];
             };
         };
-        /** @description 인증 정보가 없거나 올바르지 않음 */
+        /** @description 관리자 인증 정보가 없거나 올바르지 않음 */
         AuthenticationRequired: {
+            headers: {
+                "X-Request-Id": components["headers"]["RequestId"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["ProblemDetail"];
+            };
+        };
+        /** @description 요청을 수행할 관리자 권한이 없음 */
+        AccessDenied: {
+            headers: {
+                "X-Request-Id": components["headers"]["RequestId"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["ProblemDetail"];
+            };
+        };
+        /** @description 예약 관리 토큰이 없거나 올바르지 않음 */
+        InvalidReservationToken: {
             headers: {
                 "X-Request-Id": components["headers"]["RequestId"];
                 [name: string]: unknown;
@@ -139,8 +806,52 @@ export interface components {
                 "application/problem+json": components["schemas"]["ProblemDetail"];
             };
         };
+        /** @description 예약 경합, 중복, 상태 또는 버전 충돌 */
+        Conflict: {
+            headers: {
+                "X-Request-Id": components["headers"]["RequestId"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["ProblemDetail"];
+            };
+        };
+        /** @description 영업시간 또는 예약 정책 위반 */
+        PolicyViolation: {
+            headers: {
+                "X-Request-Id": components["headers"]["RequestId"];
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["ProblemDetail"];
+            };
+        };
+        /** @description 공개 예약 API의 클라이언트별 요청 한도 초과 */
+        RateLimited: {
+            headers: {
+                "X-Request-Id": components["headers"]["RequestId"];
+                /** @description 다시 요청하기 전 대기할 초 단위 시간 */
+                "Retry-After"?: number;
+                [name: string]: unknown;
+            };
+            content: {
+                "application/problem+json": components["schemas"]["ProblemDetail"];
+            };
+        };
     };
-    parameters: never;
+    parameters: {
+        RestaurantId: string;
+        BranchId: string;
+        /** @description 고객에게 발급된 10자리 예약 번호 */
+        ReservationCode: string;
+        ReservationId: string;
+        /** @description 예약 생성 의도를 식별하는 요청별 UUID */
+        IdempotencyKey: string;
+        /** @description 0부터 시작하는 페이지 번호 */
+        Page: number;
+        /** @description 페이지당 항목 수 */
+        Size: number;
+    };
     requestBodies: never;
     headers: {
         /** @description 요청과 서버 로그를 연결하는 추적 ID */
@@ -174,9 +885,7 @@ export interface operations {
     listTodos: {
         parameters: {
             query?: {
-                /** @description 0부터 시작하는 페이지 번호 */
                 page?: number;
-                /** @description 페이지당 항목 수 */
                 size?: number;
             };
             header?: never;
@@ -188,7 +897,6 @@ export interface operations {
             /** @description 생성일 역순의 Todo 페이지 */
             200: {
                 headers: {
-                    "X-Request-Id": components["headers"]["RequestId"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -214,7 +922,6 @@ export interface operations {
             /** @description 생성된 Todo */
             201: {
                 headers: {
-                    "X-Request-Id": components["headers"]["RequestId"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -239,7 +946,6 @@ export interface operations {
             /** @description 요청한 Todo */
             200: {
                 headers: {
-                    "X-Request-Id": components["headers"]["RequestId"];
                     [name: string]: unknown;
                 };
                 content: {
@@ -247,6 +953,751 @@ export interface operations {
                 };
             };
             404: components["responses"]["NotFound"];
+        };
+    };
+    getBookingContext: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 예약 가능한 지점과 개인정보 정책 기준 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingContextResponse"];
+                };
+            };
+        };
+    };
+    getBranchAvailability: {
+        parameters: {
+            query: {
+                /** @description 지점 현지 날짜 */
+                date: string;
+                partySize: number;
+            };
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 조건에 맞는 예약 시작 후보 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AvailabilityResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            404: components["responses"]["NotFound"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    createReservation: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description 예약 생성 의도를 식별하는 요청별 UUID */
+                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReservationRequest"];
+            };
+        };
+        responses: {
+            /** @description 생성된 예약. manageToken은 이 응답에서만 전달됩니다. */
+            201: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReservationCreatedResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    getReservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 고객에게 발급된 10자리 예약 번호 */
+                reservationCode: components["parameters"]["ReservationCode"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 고객에게 공개되는 예약 상세 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicReservationResponse"];
+                };
+            };
+            404: components["responses"]["NotFound"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    changeReservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 고객에게 발급된 10자리 예약 번호 */
+                reservationCode: components["parameters"]["ReservationCode"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeReservationRequest"];
+            };
+        };
+        responses: {
+            /** @description 변경된 예약 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicReservationResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    cancelReservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 고객에게 발급된 10자리 예약 번호 */
+                reservationCode: components["parameters"]["ReservationCode"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelReservationRequest"];
+            };
+        };
+        responses: {
+            /** @description 취소된 예약 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicReservationResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    listRestaurants: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 이름 순 식당 목록 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestaurantResponse"][];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+        };
+    };
+    createRestaurant: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateRestaurantRequest"];
+            };
+        };
+        responses: {
+            /** @description 생성된 식당 */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestaurantResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+        };
+    };
+    getRestaurant: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                restaurantId: components["parameters"]["RestaurantId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 식당 정보 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestaurantResponse"];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    updateRestaurant: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                restaurantId: components["parameters"]["RestaurantId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateRestaurantRequest"];
+            };
+        };
+        responses: {
+            /** @description 변경된 식당 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RestaurantResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+        };
+    };
+    listBranches: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                restaurantId: components["parameters"]["RestaurantId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 이름 순 지점 목록 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BranchResponse"][];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    createBranch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                restaurantId: components["parameters"]["RestaurantId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBranchRequest"];
+            };
+        };
+        responses: {
+            /** @description 생성된 지점 */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BranchResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    getBranch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 지점 정보 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BranchResponse"];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    updateBranch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateBranchRequest"];
+            };
+        };
+        responses: {
+            /** @description 변경된 지점 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BranchResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    listDiningTables: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 수용 인원·이름 순 테이블 목록 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiningTableResponse"][];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    createDiningTable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateDiningTableRequest"];
+            };
+        };
+        responses: {
+            /** @description 생성된 테이블 */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiningTableResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+        };
+    };
+    updateDiningTable: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tableId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateDiningTableRequest"];
+            };
+        };
+        responses: {
+            /** @description 변경된 테이블 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiningTableResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+        };
+    };
+    getBusinessHours: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 주간 영업시간 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusinessHoursResponse"];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    replaceBusinessHours: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReplaceBusinessHoursRequest"];
+            };
+        };
+        responses: {
+            /** @description 교체된 주간 영업시간 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusinessHoursResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    listBookingBlocks: {
+        parameters: {
+            query: {
+                startsAt: string;
+                endsAt: string;
+            };
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 차단 시간 목록 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingBlockResponse"][];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    createBookingBlock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBookingBlockRequest"];
+            };
+        };
+        responses: {
+            /** @description 생성된 차단 시간 */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingBlockResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
+            422: components["responses"]["PolicyViolation"];
+        };
+    };
+    deleteBookingBlock: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                bookingBlockId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 차단 시간이 삭제되었습니다. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    listAdminReservations: {
+        parameters: {
+            query: {
+                /** @description 지점 현지 날짜 */
+                date: string;
+                status?: components["schemas"]["ReservationStatus"];
+                /** @description 0부터 시작하는 페이지 번호 */
+                page?: components["parameters"]["Page"];
+                /** @description 페이지당 항목 수 */
+                size?: components["parameters"]["Size"];
+            };
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 시작 시각 순 예약 페이지 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminReservationPageResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    getAdminReservationDashboard: {
+        parameters: {
+            query: {
+                /** @description 지점 현지 날짜 */
+                date: string;
+            };
+            header?: never;
+            path: {
+                branchId: components["parameters"]["BranchId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 날짜별 예약 운영 현황 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminReservationDashboardResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    getAdminReservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reservationId: components["parameters"]["ReservationId"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 개인정보 표시 범위를 제한한 예약 상세와 상태 이력 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminReservationResponse"];
+                };
+            };
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+        };
+    };
+    transitionReservation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reservationId: components["parameters"]["ReservationId"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransitionReservationRequest"];
+            };
+        };
+        responses: {
+            /** @description 전이된 예약 */
+            200: {
+                headers: {
+                    "X-Request-Id": components["headers"]["RequestId"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminReservationResponse"];
+                };
+            };
+            400: components["responses"]["ValidationError"];
+            401: components["responses"]["AuthenticationRequired"];
+            403: components["responses"]["AccessDenied"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["Conflict"];
         };
     };
 }

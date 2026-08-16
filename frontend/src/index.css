@@ -1,4 +1,4 @@
 :root { color: #17211b; background: #eef3ed; font-family: Inter, Pretendard, system-ui, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; }
 body { margin: 0; }
 * { box-sizing: border-box; }
-button, input { font: inherit; }
+button, input, select, textarea { font: inherit; }

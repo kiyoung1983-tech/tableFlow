@@ -8,6 +8,8 @@ function App() {
         <NavLink className="brand" to="/">TABLEFLOW</NavLink>
         <nav aria-label="주요 메뉴">
           <NavLink to="/" end>소개</NavLink>
+          <NavLink to="/reservations/new">새 예약</NavLink>
+          <NavLink to="/reservations/manage">예약 확인</NavLink>
           <NavLink to="/todos">Todo</NavLink>
         </nav>
       </header>
