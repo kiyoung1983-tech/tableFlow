@@ -37,6 +37,26 @@ npm.cmd run dev --prefix frontend
 
 브라우저에서 `http://localhost:5173`을 엽니다. 기본 `local` 프로필의 쓰기 API 계정은 `developer / change-me-locally`이며 실제 개발에서는 실행 전에 `DEV_USER`, `DEV_PASSWORD` 환경 변수로 바꿉니다.
 
+기본 포트가 다른 프로젝트와 겹치면 PostgreSQL, 백엔드와 프런트를 각각 다른 포트로 실행할 수 있습니다. Vite 개발 프록시는 `VITE_DEV_PROXY_TARGET`을 사용하고 지정하지 않으면 기존 `http://localhost:8080`을 유지합니다.
+
+```powershell
+$env:POSTGRES_PORT='5433'
+docker compose up -d postgres
+
+$env:DB_URL='jdbc:postgresql://localhost:5433/app'
+$env:SERVER_PORT='8081'
+$env:CORS_ALLOWED_ORIGIN='http://localhost:5174'
+$env:SPRING_DOCKER_COMPOSE_ENABLED='false'
+.\backend\gradlew.bat -p backend bootRun
+```
+
+다른 PowerShell에서 다음을 실행합니다.
+
+```powershell
+$env:VITE_DEV_PROXY_TARGET='http://localhost:8081'
+npm.cmd run dev --prefix frontend -- --port 5174
+```
+
 고객은 `http://localhost:5173/reservations/new`에서 활성 지점, 날짜, 인원과 실시간 가능 시간을 선택해 예약할 수 있습니다. 생성 직후 예약 번호와 관리 토큰이 한 번 표시되므로 둘을 함께 안전하게 보관해야 합니다. 이후 `http://localhost:5173/reservations/manage`에서 두 값으로 조회·변경·취소합니다. 관리 토큰은 다시 발급되지 않으며 화면에서도 URL이나 브라우저 저장소에 보관하지 않습니다.
 
 예약 개인정보 수집·이용 안내는 `http://localhost:5173/privacy`에서 현재 서버 정책 버전과 보존 기간을 반영해 표시합니다. 운영 공개 전 실제 문구와 보존 기간은 개인정보 책임자의 승인을 받아야 합니다.
