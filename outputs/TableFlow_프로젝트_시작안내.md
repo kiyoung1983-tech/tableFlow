@@ -1,6 +1,6 @@
 # TableFlow 프로젝트 시작 안내
 
-> 확정된 MVP 설계와 첫 구현 결과는 [TableFlow MVP 설계](TableFlow_MVP_설계.md)를 기준으로 한다.
+> 이 문서는 초기 프로젝트 착수 시점의 범위와 질문을 보존한 안내서다. 현재 구현 상태는 [TableFlow 프로젝트 현황 요약](TableFlow_프로젝트_현황_요약.md), 확정 설계는 [TableFlow MVP 설계](TableFlow_MVP_설계.md), 검증 시나리오는 [TableFlow MVP 테스트 케이스](TableFlow_MVP_테스트_케이스.md)를 기준으로 한다.
 
 > 2026-08-17 현재 MVP M1~M11 구현, 릴리스 리뷰 보완과 공통 계약 대체 검증을 완료했다. 아래의 초기 Todo 예제는 계획대로 코드·화면·OpenAPI에서 제거했고, 기존 V1/V3 이력은 보존한 채 V6 migration에서 테이블을 제거했다. 운영 절차는 [TableFlow 운영 런북](TableFlow_운영_런북.md)을 따른다.
 

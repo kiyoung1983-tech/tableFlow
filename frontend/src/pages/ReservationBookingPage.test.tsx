@@ -117,6 +117,29 @@ describe('ReservationBookingPage', () => {
       .toBe(vi.mocked(createReservation).mock.calls[1][1])
   })
 
+  it('uses a new idempotency key after the failed request payload changes', async () => {
+    const user = userEvent.setup()
+    vi.mocked(getBookingContext).mockResolvedValue(bookingContext)
+    vi.mocked(getBranchAvailability).mockResolvedValue(availability)
+    vi.mocked(createReservation)
+      .mockRejectedValueOnce(new Error('일시적으로 접수하지 못했습니다.'))
+      .mockResolvedValueOnce(createdReservation)
+    renderPage()
+
+    await fillReservation(user)
+    await user.click(screen.getByRole('button', { name: '예약 요청하기' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('일시적으로 접수하지 못했습니다.')
+
+    await user.clear(screen.getByLabelText('예약자 이름'))
+    await user.type(screen.getByLabelText('예약자 이름'), '김변경')
+    await user.click(screen.getByRole('button', { name: '예약 요청하기' }))
+    await screen.findByRole('heading', { name: '예약 요청을 접수했습니다.' })
+
+    expect(createReservation).toHaveBeenCalledTimes(2)
+    expect(vi.mocked(createReservation).mock.calls[0][1])
+      .not.toBe(vi.mocked(createReservation).mock.calls[1][1])
+  })
+
   it('shows an empty state when the selected conditions have no available slots', async () => {
     const user = userEvent.setup()
     vi.mocked(getBookingContext).mockResolvedValue(bookingContext)

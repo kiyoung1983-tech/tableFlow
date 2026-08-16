@@ -144,6 +144,47 @@ class ReservationCreationIntegrationTests {
     }
 
     @Test
+    void sameCustomerCanBookAtServiceEndWhileCleanupStillOccupiesTheFirstTable()
+            throws Exception {
+        var branchId = createBookableBranch(2);
+        var first = createReservation(
+                branchId,
+                UUID.randomUUID(),
+                request(branchId, STARTS_AT, 2, "경계 고객", "010-7878-8989"));
+        var second = createReservation(
+                branchId,
+                UUID.randomUUID(),
+                request(
+                        branchId,
+                        "2026-08-18T03:30:00Z",
+                        2,
+                        "경계 고객",
+                        "01078788989"));
+
+        assertEquals(201, first.getResponse().getStatus());
+        assertEquals(201, second.getResponse().getStatus());
+        var firstCode = (String) JsonPath.read(
+                first.getResponse().getContentAsString(), "$.reservation.reservationCode");
+        var secondCode = (String) JsonPath.read(
+                second.getResponse().getContentAsString(), "$.reservation.reservationCode");
+        var firstTableId = jdbc.queryForObject(
+                "select dining_table_id from reservations where reservation_code = ?",
+                UUID.class,
+                firstCode);
+        var secondTableId = jdbc.queryForObject(
+                "select dining_table_id from reservations where reservation_code = ?",
+                UUID.class,
+                secondCode);
+
+        assertNotEquals(firstCode, secondCode);
+        assertNotEquals(firstTableId, secondTableId);
+        assertEquals(2L, jdbc.queryForObject(
+                "select count(*) from reservations where branch_id = ?",
+                Long.class,
+                branchId));
+    }
+
+    @Test
     void concurrentRequestsForLastTableAllowOnlyOneReservation() throws Exception {
         var branchId = createBookableBranch(1);
         var firstRequest = request(branchId, STARTS_AT, 2, "첫 고객", "010-1111-0001");

@@ -199,6 +199,40 @@ class ReservationManagementIntegrationTests {
                 JsonPath.read(conflict.getResponse().getContentAsString(), "$.code"));
     }
 
+    @Test
+    void concurrentCancellationAndReplacementNeverLeaveOverlappingActiveReservations()
+            throws Exception {
+        var branchId = createBookableBranch(2, (short) 2);
+        var phone = "010-9090-1010";
+        var created = createReservation(branchId, TUESDAY_START, phone);
+
+        var results = runConcurrently(
+                () -> cancel(created),
+                () -> requestReservation(branchId, TUESDAY_START, phone));
+
+        assertEquals(200, results.get(0).getResponse().getStatus());
+        assertEquals(
+                "CANCELLED",
+                JsonPath.read(results.get(0).getResponse().getContentAsString(), "$.status"));
+        var replacementStatus = results.get(1).getResponse().getStatus();
+        assertTrue(replacementStatus == 201 || replacementStatus == 409);
+        if (replacementStatus == 409) {
+            assertEquals(
+                    "DUPLICATE_CUSTOMER_RESERVATION",
+                    JsonPath.read(results.get(1).getResponse().getContentAsString(), "$.code"));
+        }
+
+        var activeCount = jdbc.queryForObject(
+                "select count(*) from reservations "
+                        + "where branch_id = ? and starts_at = ? "
+                        + "and status in ('PENDING', 'CONFIRMED', 'SEATED', 'COMPLETED')",
+                Long.class,
+                branchId,
+                OffsetDateTime.parse(TUESDAY_START));
+        assertEquals(replacementStatus == 201 ? 1L : 0L, activeCount);
+        assertTrue(activeCount <= 1L);
+    }
+
     private MvcResult change(CreatedReservation created, String startsAt) throws Exception {
         return mockMvc.perform(patch("/api/public/reservations/{code}", created.code())
                         .header("X-Reservation-Token", created.token())
@@ -211,7 +245,17 @@ class ReservationManagementIntegrationTests {
 
     private CreatedReservation createReservation(
             UUID branchId, String startsAt, String phone) throws Exception {
-        var result = mockMvc.perform(post("/api/public/reservations")
+        var result = requestReservation(branchId, startsAt, phone);
+        assertEquals(201, result.getResponse().getStatus());
+        var body = result.getResponse().getContentAsString();
+        return new CreatedReservation(
+                JsonPath.read(body, "$.reservation.reservationCode"),
+                JsonPath.read(body, "$.manageToken"));
+    }
+
+    private MvcResult requestReservation(UUID branchId, String startsAt, String phone)
+            throws Exception {
+        return mockMvc.perform(post("/api/public/reservations")
                         .header("Idempotency-Key", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -224,12 +268,16 @@ class ReservationManagementIntegrationTests {
                                   "privacyAgreement":{"agreed":true,"policyVersion":"2026-08-16"}
                                 }
                                 """.formatted(branchId, startsAt, phone)))
-                .andExpect(status().isCreated())
                 .andReturn();
-        var body = result.getResponse().getContentAsString();
-        return new CreatedReservation(
-                JsonPath.read(body, "$.reservation.reservationCode"),
-                JsonPath.read(body, "$.manageToken"));
+    }
+
+    private MvcResult cancel(CreatedReservation created) throws Exception {
+        return mockMvc.perform(post(
+                                "/api/public/reservations/{code}/cancellation", created.code())
+                        .header("X-Reservation-Token", created.token())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"reason\":\"동시 취소\",\"expectedVersion\":0}"))
+                .andReturn();
     }
 
     private UUID createBookableBranch(int tableCount, short dayOfWeek) {

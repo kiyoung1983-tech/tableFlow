@@ -157,7 +157,9 @@ docker compose -f compose.prod.yaml up --build -d
 ## 문서
 
 - [TableFlow 프로젝트 시작 안내](outputs/TableFlow_프로젝트_시작안내.md)
+- [TableFlow 프로젝트 현황 요약](outputs/TableFlow_프로젝트_현황_요약.md)
 - [TableFlow MVP 설계](outputs/TableFlow_MVP_설계.md)
+- [TableFlow MVP 테스트 케이스](outputs/TableFlow_MVP_테스트_케이스.md)
 - [TableFlow 운영 런북](outputs/TableFlow_운영_런북.md)
 - [TableFlow 스테이징 UAT 체크리스트](outputs/TableFlow_스테이징_UAT_체크리스트.md)
 - [상세 신입 개발 가이드](outputs/Spring_풀스택_개발_신입_가이드.md)
@@ -165,4 +167,4 @@ docker compose -f compose.prod.yaml up --build -d
 - [공통 기능 구축 기록](outputs/공통기능_구축_상세기록.md)
 - [전체 환경 구축 진행 기록](outputs/개발환경_구축_진행기록.md)
 
-Git 저장소는 `main` 브랜치로 초기화되어 있지만 아직 최초 커밋은 만들지 않았습니다. 검토 후 팀의 저장소와 커밋 규칙에 맞춰 첫 커밋을 생성하세요.
+현재 MVP 기준선은 `feature/tableflow-mvp` 브랜치에서 관리하며 공개 원격 저장소 `kiyoung1983-tech/tableFlow`를 추적합니다. 후속 작업은 테스트 케이스와 운영 체크리스트를 갱신하고 전체 품질 게이트를 통과한 뒤 논리적인 단위로 커밋하세요.
