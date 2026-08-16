@@ -31,78 +31,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/HealthResponse"
 
-  /api/todos:
-    get:
-      operationId: listTodos
-      summary: 전환 기간 Todo 목록 조회
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            minimum: 0
-            default: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-      responses:
-        "200":
-          description: 생성일 역순의 Todo 페이지
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TodoPageResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-    post:
-      operationId: createTodo
-      summary: 전환 기간 Todo 생성
-      security:
-        - basicAuth: []
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateTodoRequest"
-      responses:
-        "201":
-          description: 생성된 Todo
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TodoResponse"
-        "400":
-          $ref: "#/components/responses/ValidationError"
-        "401":
-          $ref: "#/components/responses/AuthenticationRequired"
-
-  /api/todos/{id}:
-    get:
-      operationId: getTodo
-      summary: 전환 기간 Todo 단건 조회
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: 요청한 Todo
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TodoResponse"
-        "404":
-          $ref: "#/components/responses/NotFound"
-
   /api/public/booking-context:
     get:
       tags: [Public Booking]
@@ -937,55 +865,6 @@ components:
           type: string
           examples: [UP]
       additionalProperties: true
-
-    CreateTodoRequest:
-      type: object
-      required: [title]
-      properties:
-        title:
-          type: string
-          minLength: 1
-          maxLength: 200
-
-    TodoResponse:
-      type: object
-      required: [id, title, completed, createdAt, updatedAt]
-      properties:
-        id:
-          type: string
-          format: uuid
-        title:
-          type: string
-        completed:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-
-    TodoPageResponse:
-      type: object
-      required: [items, page, size, totalElements, totalPages, first, last]
-      properties:
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/TodoResponse"
-        page:
-          type: integer
-        size:
-          type: integer
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-        first:
-          type: boolean
-        last:
-          type: boolean
 
     OperationalStatus:
       type: string

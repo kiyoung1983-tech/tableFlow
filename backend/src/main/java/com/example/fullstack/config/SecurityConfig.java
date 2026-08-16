@@ -86,7 +86,6 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/health/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/todos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/public/reservations").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/public/reservations/*").permitAll()
                         .requestMatchers(

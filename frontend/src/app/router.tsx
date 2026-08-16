@@ -8,7 +8,6 @@ import { OidcSigninCallbackPage, OidcSignoutCallbackPage } from '../pages/OidcCa
 import { ReservationBookingPage } from '../pages/ReservationBookingPage'
 import { PrivacyPolicyPage } from '../pages/PrivacyPolicyPage'
 import { AdminSettingsPage } from '../pages/AdminSettingsPage'
-import { TodoPage } from '../pages/TodoPage'
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +22,6 @@ export const router = createBrowserRouter([
       { path: 'admin/settings', element: <AdminSettingsPage /> },
       { path: 'auth/callback', element: <OidcSigninCallbackPage /> },
       { path: 'auth/logout-callback', element: <OidcSignoutCallbackPage /> },
-      { path: 'todos', element: <TodoPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

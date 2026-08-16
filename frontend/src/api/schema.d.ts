@@ -21,41 +21,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/todos": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** 전환 기간 Todo 목록 조회 */
-        get: operations["listTodos"];
-        put?: never;
-        /** 전환 기간 Todo 생성 */
-        post: operations["createTodo"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/todos/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** 전환 기간 Todo 단건 조회 */
-        get: operations["getTodo"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/public/booking-context": {
         parameters: {
             query?: never;
@@ -407,29 +372,6 @@ export interface components {
             status: string;
         } & {
             [key: string]: unknown;
-        };
-        CreateTodoRequest: {
-            title: string;
-        };
-        TodoResponse: {
-            /** Format: uuid */
-            id: string;
-            title: string;
-            completed: boolean;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        TodoPageResponse: {
-            items: components["schemas"]["TodoResponse"][];
-            page: number;
-            size: number;
-            /** Format: int64 */
-            totalElements: number;
-            totalPages: number;
-            first: boolean;
-            last: boolean;
         };
         /** @enum {string} */
         OperationalStatus: "ACTIVE" | "INACTIVE";
@@ -880,79 +822,6 @@ export interface operations {
                     "application/json": components["schemas"]["HealthResponse"];
                 };
             };
-        };
-    };
-    listTodos: {
-        parameters: {
-            query?: {
-                page?: number;
-                size?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 생성일 역순의 Todo 페이지 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TodoPageResponse"];
-                };
-            };
-            400: components["responses"]["ValidationError"];
-        };
-    };
-    createTodo: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateTodoRequest"];
-            };
-        };
-        responses: {
-            /** @description 생성된 Todo */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TodoResponse"];
-                };
-            };
-            400: components["responses"]["ValidationError"];
-            401: components["responses"]["AuthenticationRequired"];
-        };
-    };
-    getTodo: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description 요청한 Todo */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TodoResponse"];
-                };
-            };
-            404: components["responses"]["NotFound"];
         };
     };
     getBookingContext: {
